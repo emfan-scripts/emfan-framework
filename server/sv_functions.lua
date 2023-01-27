@@ -1,24 +1,34 @@
 
-
-
-
--- QBCore
 if Framework == 'qb-core' then
     QBCore = exports['qb-core']:GetCoreObject()
-    emfan.createCallback = QBCore.Functions.CreateCallback
-    emfan.getPlayer = QBCore.Functions.GetPlayer
-    emfan.getPlayers = QBCore.Functions.GetPlayers
-
--- ESX
 elseif Framework == 'esx' then 
     ESX = exports['es_extended']:getSharedObject()
-    emfan.createCallback = ESX.RegisterServerCallback
-    emfan.getPlayer = ESX.GetPlayerFromId
-    emfan.getPlayers = ESX.GetPlayers
-    --emfan.getPlayers = ESX.GetExtendedPlayers()
 end
 
--- FUNCTIONS
+function emfan.createCallback()
+    if Framework == 'qb-core' then
+        return QBCore.Functions.CreateCallback
+    elseif Framework == 'esx' then
+        return ESX.RegisterServerCallback
+    end
+end
+
+function emfan.getPlayer()
+    if Framework == 'qb-core' then
+        return QBCore.Functions.GetPlayer
+    elseif Framework == 'esx' then
+        return ESX.GetPlayerFromId
+    end
+end
+
+function emfan.getPlayers()
+    if Framework == 'qb-core' then
+        return QBCore.Functions.GetPlayers
+    elseif Framework == 'esx' then
+        return ESX.GetPlayers
+        --emfan.getPlayers = ESX.GetExtendedPlayers()
+    end
+end
 
 function emfan.notify(source, text, notifyType, length)
     if Framework == 'qb-core' then
@@ -63,12 +73,7 @@ function emfan.getJob(source)
     if Framework == 'qb-core' then
         return QBCore.Functions.GetPlayer(source).PlayerData.job.name
     elseif Framework == 'esx' then
-<<<<<<< HEAD
-        local Player = ESX.GetPlayerFromId(source)
-        return Player.job.name
-=======
-        return ESX.GetPlayerFromId(source).PlayerData.job.name
->>>>>>> eeba89a8ad9ba8e09515a82de12c0c8e3d30bfb6
+        return ESX.GetPlayerFromId(source)job.name
     end
 end
 
@@ -126,16 +131,10 @@ function getServerVehicles()
     return allVehicles
 end
 
+-- function emfan.()
+--     if Framework == 'qb-core' then
 
+--     elseif Framework == 'esx' then
 
--- CALLBACKS
-CreateThread(function()
-    Wait(1000)
-    emfan.createCallback('emfan-framework:cb:getAllVehicles', function(source, cb)
-        cb(getServerVehicles())
-    end)
-
-    emfan.createCallback('emfan-framework:cb:getAllJobs', function(source, cb)
-        local allJobs = MySQL.Sync.fetchAll('SELECT * FROM jobs', {})
-    end)
-end)
+--     end
+-- end
