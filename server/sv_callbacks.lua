@@ -1,12 +1,10 @@
-emfan.createCallback('emfan-framework:esx:getBankMoney', function(source, cb)
-    local Player = emfan.getPlayer(source)
-    cb(Player.getAccount("bank").money)
-end)
-
+CreateThread(function()
+    Wait(100)
 emfan.createCallback('emfan-framework:cb:getAllVehicles', function(source, cb)
-    cb(getServerVehicles())
+    local allVehicles = MySQL.Sync.fetchAll('SELECT * FROM vehicles', {})
+    for k, v in pairs(allVehicles) do
+        print("kv", k, v)
+    end
+    cb(allVehicles)
 end)
-
-emfan.createCallback('emfan-framework:cb:getAllJobs', function(source, cb)
-    local allJobs = MySQL.Sync.fetchAll('SELECT * FROM jobs', {})
 end)
