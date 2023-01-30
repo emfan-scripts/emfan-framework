@@ -8,7 +8,12 @@ elseif Framework == 'esx' then
 end
 
 CreateThread(function()
-    Wait(100)
+    Wait(10)
+    function emfan.callback(eventName, source, cb, ...)
+        if not emfan.serverCallbacks[eventName] then return end
+        emfan.serverCallbacks[eventName](source, cb, ...)
+    end
+
     function emfan.createCallback(eventName, cb)
         emfan.serverCallbacks[eventName] = cb
     end
@@ -24,7 +29,11 @@ CreateThread(function()
             PlayerData.charinfo = {
                 firstname = playerGrab.firstname,
                 lastname = playerGrab.lastname,
-                phone = playerGrab.phone_number
+                phone = playerGrab.phone_number,
+                money = {
+                    cash = PlayerData.accounts.money,
+                    bank = PlayerData.accounts.bank
+                }
             }
             return PlayerData
         end
@@ -124,6 +133,15 @@ CreateThread(function()
         end
     end
 
+    -- function emfan.getVehicleInfo(model)
+    --     if Framework == 'qb-core' then
+    --         return QBCore.Shared.Vehicles[model]
+    --     elseif Framework == 'esx' then
+    --         local fetchVehicle = MySQL.Sync.fetchAll('SELECT * FROM vehicles WHERE model = ?', {model})
+    --         return fetchVehicle[1]
+    --     end
+    -- end
+
     function emfan.getAllVehicles()
         if Framework == 'qb-core' then
             return QBCore.Shared.Vehicles
@@ -131,14 +149,6 @@ CreateThread(function()
             return getAllVehicles()
         end
     end
-
-    -- function emfan.()
-    --     if Framework == 'qb-core' then
-
-    --     elseif Framework == 'esx' then
-
-    --     end
-    -- end
 
     function getBankMoney(source, cb)
         local Player = emfan.getPlayer(source)
@@ -162,3 +172,7 @@ CreateThread(function()
         end
     end
 end)
+
+function getPlayerData(src)
+    
+end

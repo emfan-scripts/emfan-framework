@@ -7,32 +7,37 @@ elseif Config.Framework == 'esx' then
 end
 
 CreateThread(function()
-    Wait(1000)
+    Wait(10)
     function emfan.callback(eventName, cb, ...)
         emfan.clientCallbacks[eventName] = cb
         TriggerServerEvent('emfan-framework:server:callback', eventName, ...)
-        
     end
 
-    function emfan.notify()
+    function emfan.notify(message, notifyType, time)
         if Framework == 'qb-core' then
-            return QBCore.Functions.Notify
+            return QBCore.Functions.Notify(message, notifyType, time)
         elseif Framwork == 'esx' then
-            return ESX.ShowNotification
+            return ESX.ShowNotification(message, "primary", time)
         end
     end
 
     function emfan.getPlayer()
         if Framework == 'qb-core' then
-            return QBCore.Functions.GetPlayerData
+            return QBCore.Functions.GetPlayerData()
         elseif Framwork == 'esx' then
             local data = ESX.GetPlayerData()
-            emfan.callback('emfan-framework:esx:getBankMoney', function(amount)
-                local cash = data.money
-                data.money = {}
-                data.money.cash = cash
-                data.money.bank = amount
-                return data
+            emfan.callback('emfan-framework:cb:getPlayerData', function(PlayerData)
+                return PlayerData
+            end)
+        end
+    end
+
+    function emfan.getCid()
+        if Framework == 'qb-core' then
+            return QBCore.Functions.GetPlayerData().citizenid
+        elseif Framework == 'esx' then
+            emfan.callback('emfan-framework:cb:getCid', function(citizenid)
+                return citizenid
             end)
         end
     end
@@ -48,6 +53,15 @@ CreateThread(function()
     function emfan.getJob()
         if Framework == 'qb-core' then
             return QBCore.Functions.GetPlayerData().job.name
+        elseif Framework == 'esx' then
+            local Player = ESX.GetPlayerData()
+            return Player.job.name
+        end
+    end
+
+    function emfan.getIsBoss()
+        if Framework == 'qb-core' then
+            return QBCore.Functions.GetPlayerData().job.isboss
         elseif Framework == 'esx' then
             local Player = ESX.GetPlayerData()
             return Player.job.name
@@ -80,4 +94,50 @@ CreateThread(function()
         end
     end
 
+    function emfan.loadAnimation(anim)
+        while not HasAnimDictLoaded(anim) do
+            RequestAnimDict(anim)
+            Wait(100)
+        end
+    end
+
+    function emfan.loadModel(model)
+        local hash = GetHashKey(model)
+        while not HasModelLoaded(model) do 
+            RequestModel(model)
+            Wait(100)
+        end
+    end
+
+    function emfan.getVehicleProperties(vehicle)
+        if Framework == 'qb-core' then
+            return QBCore.Functions.GetVehicleProperties(vehicle)
+        elseif Framework == 'esx' then
+            return ESX.Game.GetVehicleProperties(vehicle)
+        end
+    end
+
+    function emfan.setVehicleProperties(vehicle, properties)
+        if Framework == 'qb-core' then
+            return QBCore.Functions.SetVehicleProperties(vehicle, properties)
+        elseif Framework == 'esx' then
+            return ESX.Game.SetVehicleProperties(vehicle, properties)
+        end
+    end
+
+    function emfan.getClosestPlayer()
+        if Framework == 'qb-core' then
+            return QBCore.Functions.GetClosestPlayer()
+        elseif Framework == 'esx' then
+            return ESX.Game.GetClosestPlayer()
+        end
+    end
+
+    function emfan.getClosestVehicle(coords)
+        if Framework == 'qb-core' then
+            return QBCore.Functions.GetClosestVehicle(coords)
+        elseif Framework == 'esx' then
+            return ESX.Game.GetClosestVehicle(coords)
+        end
+    end
 end)
