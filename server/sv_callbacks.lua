@@ -1,7 +1,7 @@
 emfan = {}
 
 CreateThread(function()
-    Wait(1000)
+    Wait(100)
     emfan.createCallback('emfan-framework:cb:getAllVehicles', function(source, cb)
         local allVehicles = MySQL.Sync.fetchAll('SELECT * FROM vehicles', {})
         cb(allVehicles)

@@ -22,8 +22,10 @@ CreateThread(function()
         if Framework == 'qb-core' then
             return QBCore.Functions.GetPlayer(src)
         elseif Framework == 'esx' then
-            local identifier = GetPlayerIdentifier(src)
-            local playerGrab = MySQL.Sync.fetchAll('SELECT * FROM users WHERE identifier LIKE ?', {identifier})
+            local identifier = ESX.GetPlayerFromId(src).identifier
+            local count = 1
+            identifier = string.gsub(identifier, 'license', "char" .. count)
+            local playerGrab = MySQL.Sync.fetchAll('SELECT * FROM users WHERE identifier = ?', {identifier})
             playerGrab = playerGrab[1]
             local PlayerData = ESX.GetPlayerFromId(src)
             PlayerData.charinfo = {
