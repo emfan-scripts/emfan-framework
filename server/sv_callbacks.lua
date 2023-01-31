@@ -11,7 +11,11 @@ CreateThread(function()
         cb(emfan.getPlayer(source))
     end)
 
-    emfan.callback('emfan-framework:cb:getCid', function(source, cb)
+    emfan.createCallback('emfan-framework:cb:getCid', function(source, cb)
         cb(emfan.getCid(source))
+    end)
+
+    emfan.createCallback('emfan-framework:cb:getMoney', function(source, cb)
+        cb(emfan.getMoney(source))
     end)
 end)

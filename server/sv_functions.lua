@@ -9,6 +9,7 @@ end
 
 CreateThread(function()
     Wait(10)
+    
     function emfan.callback(eventName, source, cb, ...)
         if not emfan.serverCallbacks[eventName] then return end
         emfan.serverCallbacks[eventName](source, cb, ...)
@@ -104,7 +105,7 @@ CreateThread(function()
         elseif Framework == 'esx' then
             job = "society_" .. job
             local preMoney = MySQL.Sync.fetchScalar('SELECT money FROM addon_account_data WHERE account_name = ?', {job})
-            MySQL.Async.execute('UPDATE addon_account_data SET money = ? WHERE account_name = ?', {amount+preMoney, job})
+            MySQL.Async.execute('UPDATE addon_account_data SET money = ? WHERE account_name = ?', {preMoney+amount, job})
         end
     end
 
@@ -114,7 +115,7 @@ CreateThread(function()
         elseif Framework == 'esx' then
             job = "society_" .. job
             local preMoney = MySQL.Sync.fetchScalar('SELECT money FROM addon_account_data WHERE account_name = ?', {job})
-            MySQL.Async.execute('UPDATE addon_account_data SET money = ? WHERE account_name = ?', {amount-preMoney, job})
+            MySQL.Async.execute('UPDATE addon_account_data SET money = ? WHERE account_name = ?', {preMoney-amount, job})
         end
     end
 

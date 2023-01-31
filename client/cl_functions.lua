@@ -7,17 +7,25 @@ elseif Config.Framework == 'esx' then
 end
 
 local PlayerData = {}
+local PlayerMoney = {}
 local allVehicles = {}
 
 CreateThread(function()
-    Wait(150)
-    emfan.callback('emfan-framework:cb:getPlayerData', function(data)
-        PlayerData = data
-    end)
+    Wait(200)
+    while true do
+        emfan.callback('emfan-framework:cb:getPlayerData', function(data)
+            PlayerData = data
+        end)
 
-    emfan.callback('emfan-framework:cb:getAllVehicles', function(data)
-        allVehicles = data
-    end)
+        emfan.callback('emfan-framework:cb:getAllVehicles', function(data)
+            allVehicles = data
+        end)
+
+        emfan.callback('emfan-framework:cb:getMoney', function(data)
+            PlayerMoney = data
+        end)
+        Wait(1000 * 60)
+    end
 end)
 
 CreateThread(function()
@@ -32,8 +40,8 @@ CreateThread(function()
     function emfan.notify(message, notifyType, time)
         if Framework == 'qb-core' then
             return QBCore.Functions.Notify(message, notifyType, time)
-        elseif Framwork == 'esx' then
-            return ESX.ShowNotification(message, "primary", time)
+        elseif Framework == 'esx' then
+            return ESX.ShowNotification(message, true, false, time)
         end
     end
 
@@ -85,10 +93,11 @@ CreateThread(function()
         if Framework == 'qb-core' then
             return QBCore.Shared.Vehicles
         elseif Framework == 'esx' then
-            print("HELLOO")
-            for k, v in pairs(allVehicles) do
-                print("k2", k, v)
-            end
+            -- print("HELLOO")
+            -- for k, v in pairs(allVehicles) do
+            --     print("k2", k, v)
+            -- end
+            
             return allVehicles
         end
     end
@@ -97,7 +106,10 @@ CreateThread(function()
         if Framework == 'qb-core' then
             return QBCore.Functions.GetPlayerData().money[account]
         elseif Framework == 'esx' then
-            return ESX.GetPlayerData().money[account]
+            -- emfan.callback('emfan-framework:cb:getMoney', function(data)
+                return PlayerMoney
+            -- end)
+            -- return ESX.GetPlayerData().money[account]
         end
     end
 
@@ -155,4 +167,19 @@ CreateThread(function()
             return ESX.Game.GetClosestVehicle(coords)
         end
     end
+
+    function emfan.setVehicleOwner(plate, vehicle)
+        if Framework == 'qb-core' then
+            if Config.VehicleKeySystem == 'default' or Config.VehicleKeySystem == 'emfan' or Config.VehicleKeySystem == false then
+                TriggerEvent('vehiclekeys:client:SetOwner', plate, vehicle)
+            elseif Config.VehicleKeySystem == 'nerv' then
+                TriggerServerEvent('nerv-vehiclekey:server:needKey', plate, vehicle)
+            elseif Config.VehicleKeySystem == 'cd_garage' then
+                TriggerEvent('cd_garage:AddKeys', exports['cd_garage']:GetPlate(vehicle))
+            end
+        elseif Framework == 'esx' then
+        -- Add emfan-vehiclekeys when its done for ESX
+        end
+    end
+
 end)
