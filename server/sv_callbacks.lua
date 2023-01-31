@@ -2,11 +2,12 @@ emfan = {}
 
 CreateThread(function()
     Wait(100)
-    emfan.createCallback('emfan-framework:cb:getAllVehicles', function(source, cb)
-        local allVehicles = MySQL.Sync.fetchAll('SELECT * FROM vehicles', {})
-        cb(allVehicles)
-    end)
-
+    if Config.Framework == 'esx' then
+        emfan.createCallback('emfan-framework:cb:getAllVehicles', function(source, cb)
+            local allVehicles = MySQL.Sync.fetchAll('SELECT * FROM vehicles', {})
+            cb(allVehicles)
+        end)
+    end
     emfan.createCallback('emfan-framework:cb:getPlayerData', function(source, cb)
         cb(emfan.getPlayer(source))
     end)

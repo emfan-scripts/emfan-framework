@@ -10,6 +10,16 @@ end
 CreateThread(function()
     Wait(10)
     
+    function emfan.addItem(source, item, amount, metadata)
+        if Framework == 'qb-core' then
+            local Player = QBCore.Functions.GetPlayer(source)
+            Player.Functions.AddItem(item, amount, false, metadata)
+        elseif Framework == 'esx' then
+            local Player = ESX.GetPlayerFromId(source)
+            Player.addInventoryItem(item, amount, metadata)
+        end
+    end
+
     function emfan.callback(eventName, source, cb, ...)
         if not emfan.serverCallbacks[eventName] then return end
         emfan.serverCallbacks[eventName](source, cb, ...)
@@ -175,8 +185,21 @@ CreateThread(function()
             return MySQL.Sync.fetchAll('SELECT * FROM jobs', {})
         end
     end
-end)
 
-function getPlayerData(src)
-    
-end
+    function emfan.hasItem(source, item)
+        if Framework == 'qb-core' then
+            local Player = QBCore.Functions.GetPlayer(source)
+            return Player.Functions.GetItemByName(item)
+        elseif Framework == 'esx' then
+            return exports.ox_inventory:Search(source, 'slots', item)
+        end
+    end
+
+    function emfan.createUseableItem()
+        if Framework == 'qb-core' then
+            return QBCore.Functions.CreateUseableItem
+        elseif Framework == 'esx' then
+            return ESX.RegisterUsableItem
+        end
+    end
+end)
