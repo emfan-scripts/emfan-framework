@@ -60,13 +60,13 @@ CreateThread(function()
         end
     end
 
-    function emfan.addMoney(source, account, amount)
+    function emfan.addMoney(source, account, amount, note)
         if Framework == 'qb-core' then
             local Player = QBCore.Functions.GetPlayer(source)
             Player.Functions.AddMoney(account, amount)
         elseif Framework == 'esx' then
             local Player = ESX.GetPlayerFromId(source)
-            ESX.addMoney(account, amount)
+            Player.addAccountMoney(account, amount, note)
         end
     end
 
@@ -132,7 +132,8 @@ CreateThread(function()
         if Framework == 'qb-core' then
             return QBCore.Functions.GetPlayer(source).PlayerData.citizenid
         elseif Framework == 'esx' then
-            return GetPlayerIdentifier(source)
+            local Player = ESX.GetPlayerFromId(source)
+            return Player.identifier
         end
     end
 

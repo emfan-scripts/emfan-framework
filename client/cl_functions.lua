@@ -66,7 +66,7 @@ CreateThread(function()
     function emfan.getAllJobs()
         if Framework == 'qb-core' then
             return QBCore.Shared.Jobs
-        elseif Framwork == 'esx' then
+        elseif Framework == 'esx' then
             return emfan.callback('emfan-framework:cb:getAllJobs')
         end
     end
