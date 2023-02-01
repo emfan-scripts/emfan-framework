@@ -1,5 +1,5 @@
 emfan = {}
-emfan.clientCallbacks = {}
+emfan.serverCallbacks = {}
 Framework = Config.Framework
 emfan.Framework = Framework
 

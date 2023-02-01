@@ -1,6 +1,6 @@
 RegisterNetEvent('emfan-framework:client:callback', function(eventName, ...)
-    if emfan.clientCallbacks[eventName] then
-        emfan.clientCallbacks[eventName](...)
-        emfan.clientCallbacks[eventName] = nil
+    if emfan.serverCallbacks[eventName] then
+        emfan.serverCallbacks[eventName](...)
+        emfan.serverCallbacks[eventName] = nil
     end
 end)
