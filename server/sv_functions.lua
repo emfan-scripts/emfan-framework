@@ -12,9 +12,10 @@ end
 function emfan.addItem(source, item, amount, metadata)
     if Framework == 'qb-core' then
         local Player = QBCore.Functions.GetPlayer(source)
-        if item == 'fakeplate' then
+        if item == 'fakeplate' and metadata == nil then
+            local plate = setupPlateNumber()
             local metadata = {
-                description = setupPlateNumber()
+                description = plate
             }
         end
         Player.Functions.AddItem(item, amount, false, metadata)
@@ -58,6 +59,10 @@ function emfan.createCallback(eventName, cb)
     emfan.serverCallbacks[eventName] = cb
 end
 
+function emfan.createCustomPlate()
+    return setupPlateNumber()
+end
+
 function emfan.createUseableItem(item, ...)
     if Framework == 'qb-core' then
         QBCore.Functions.CreateUseableItem(item, ...)
@@ -89,6 +94,26 @@ function emfan.getAllVehicles()
         return QBCore.Shared.Vehicles
     elseif Framework == 'esx' then
         return getAllVehicles()
+    end
+end
+
+function emfan.getItem(source, item)
+    if Framework == 'qb-core' then
+        local Player = QBCore.Functions.GetPlayer(source)
+        return Player.Functions.GetItemByName(item)
+    elseif Framework == 'esx' then
+        local Player = ESX.GetPlayerFromId(source)
+        return Player.getInventoryItem(item)
+    end
+end
+
+function emfan.getItems(source, item)
+    if Framework == 'qb-core' then
+        local Player = QBCore.Functions.GetPlayer(source)
+        return Player.Functions.GetItemsByName(item)
+    elseif Framework == 'esx' then
+        local Player = ESX.GetPlayerFromId(source)
+        return exports['ox_inventory']:getInventory(Player)
     end
 end
 
