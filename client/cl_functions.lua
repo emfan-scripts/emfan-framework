@@ -1,4 +1,5 @@
 emfan = {}
+emfan.serverCallbacks = {}
 
 if Config.Framework == 'qb-core' then
     QBCore = exports['qb-core']:GetCoreObject()
@@ -24,6 +25,22 @@ local allVehicles = {}
         elseif Framework == 'esx' then
             return emfan.callback('emfan-framework:cb:getAllJobs')
         end
+    end
+
+    function emfan.getAllVehicleCategories()
+        local allVehicles
+        if Framework == 'qb-core' then
+            allVehicles = QBCore.Shared.Vehicles
+        elseif Framework == 'esx' then
+            allVehicles = MySQL.Sync.fetchAll('SELECT * FROM vehicles')
+        end
+        local allCategories = {}
+        for k, v in pairs(allVehicles) do
+            if allCategories[v.category] == nil then
+                allCategories[v.category] = v.category
+            end
+        end
+        return allCategories
     end
 
     function emfan.getAllVehicles()

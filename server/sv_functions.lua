@@ -12,9 +12,19 @@ end
 function emfan.addItem(source, item, amount, metadata)
     if Framework == 'qb-core' then
         local Player = QBCore.Functions.GetPlayer(source)
+        if item == 'fakeplate' then
+            local metadata = {
+                description = setupPlateNumber()
+            }
+        end
         Player.Functions.AddItem(item, amount, false, metadata)
     elseif Framework == 'esx' then
         local Player = ESX.GetPlayerFromId(source)
+        if item == 'fakeplate' then
+            local metadata = {
+                description = setupPlateNumber()
+            }
+        end
         Player.addInventoryItem(item, amount, metadata)
     end
 end
@@ -140,6 +150,60 @@ function emfan.getPlayers()
         return ESX.GetPlayers
         --emfan.getPlayers = ESX.GetExtendedPlayers()
     end
+end
+
+function emfan.getRandomInt(amount)
+    local int 
+    for i = 1, amount, 1 do
+        if int == nil then
+            int = tostring(math.random(1, 9))
+        else
+            int = tostring(int) .. tostring(math.random(1,9))
+        end 
+    end
+    return tonumber(int)
+end
+
+function emfan.getRandomStr(amount)
+    local letters = {
+        [1] = 'A',
+        [2] = 'B',
+        [3] = 'C',
+        [4] = 'D',
+        [5] = 'E',
+        [6] = 'F',
+        [7] = 'G',
+        [8] = 'H',
+        [9] = 'I',
+        [10] = 'J',
+        [11] = 'K',
+        [12] = 'L',
+        [13] = 'M',
+        [14] = 'N',
+        [15] = 'O',
+        [16] = 'P',
+        [17] = 'Q',
+        [18] = 'R',
+        [19] = 'S',
+        [20] = 'T',
+        [21] = 'U',
+        [22] = 'V',
+        [23] = 'W',
+        [24] = 'X',
+        [25] = 'Y',
+        [26] = 'Z',
+    }
+    local str
+    for i = 1, amount, 1 do
+        local letter = math.random(1, #letters)
+        letter = letters[letter]
+        if str == nil then
+            str = tostring(letter)
+        else
+            str = str .. tostring(letter)
+        end
+    end
+    return str
 end
 
 function emfan.hasItem(source, item)
