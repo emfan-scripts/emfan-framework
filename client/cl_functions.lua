@@ -35,9 +35,17 @@ local allVehicles = {}
             allVehicles = MySQL.Sync.fetchAll('SELECT * FROM vehicles')
         end
         local allCategories = {}
-        for k, v in pairs(allVehicles) do
-            if allCategories[v.category] == nil then
-                allCategories[v.category] = v.category
+        for _, v in pairs(allVehicles) do
+            local alreadyAdded = false
+            for _, value in pairs(allCategories) do
+                if value == v.category then
+                    alreadyAdded = true
+                end
+            end
+            if allCategories[1] == nil and alreadyAdded == false then
+                allCategories[1] = v.category
+            elseif alreadyAdded == false then
+                allCategories[#allCategories+1] = v.category
             end
         end
         return allCategories
@@ -198,12 +206,20 @@ local allVehicles = {}
             return ESX.Game.SetVehicleProperties(vehicle, properties)
         end
     end
+    
+    function emfan.spawnVehicle(model, coords, warp)
+        emfan.callback('emfan-framwork:cb:spawnVehicle', function(netId)
+            
+        end, model, coords, warp)
+    end
 
     function emfan.WaitForLogin()
         if Framework == 'qb-core' then
             while not LocalPlayer.state.isLoggedIn do Wait(100) end
+            Wait(1000)
         elseif Framwork == 'esx' then
             while not ESX.PlayerLoaded do Wait(100) end
+            Wait(1000)
         end
     end
 

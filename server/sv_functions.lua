@@ -90,7 +90,6 @@ end
 
 function emfan.getAllVehicles()
     if Framework == 'qb-core' then
-        print("HFKHDKJ SYNS")
         return QBCore.Shared.Vehicles
     elseif Framework == 'esx' then
         return getAllVehicles()
@@ -237,6 +236,14 @@ function emfan.hasItem(source, item)
         return Player.Functions.GetItemByName(item)
     elseif Framework == 'esx' then
         return exports.ox_inventory:Search(source, 'slots', item)
+    end
+end
+
+function emfan.loadModel(model)
+    local hash = GetHashKey(model)
+    while not HasModelLoaded(model) do 
+        RequestModel(model)
+        Wait(100)
     end
 end
 
