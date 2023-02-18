@@ -125,6 +125,10 @@ function emfan.getPlayer()
     end
 end
 
+function emfan.getVehicleModel(vehicle)
+    return GetEntityArchetypeName(vehicle)
+end
+
 function emfan.getVehicleProperties(vehicle)
     if Framework == 'qb-core' then
         return QBCore.Functions.GetVehicleProperties(vehicle)
