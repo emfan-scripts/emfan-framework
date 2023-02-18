@@ -84,7 +84,7 @@ function emfan.getAllJobs()
     if Framework == 'qb-core' then
         return QBCore.Shared.Jobs
     elseif Framework == 'esx' then
-        return MySQL.Sync.fetchAll('SELECT * FROM jobs', {})
+        return MySQL.Sync.fetchAll('SELECT name FROM jobs', {})
     end
 end
 
@@ -148,22 +148,26 @@ function emfan.getPlayer(src)
     if Framework == 'qb-core' then
         return QBCore.Functions.GetPlayer(src)
     elseif Framework == 'esx' then
-        local identifier = ESX.GetPlayerFromId(src).identifier
-        local count = 1
-        identifier = string.gsub(identifier, 'license', "char" .. count)
-        local playerGrab = MySQL.Sync.fetchAll('SELECT * FROM users WHERE identifier = ?', {identifier})
-        playerGrab = playerGrab[1]
-        local PlayerData = ESX.GetPlayerFromId(src)
-        PlayerData.charinfo = {
-            firstname = playerGrab.firstname,
-            lastname = playerGrab.lastname,
-            phone = playerGrab.phone_number,
-            money = {
-                cash = PlayerData.accounts.money,
-                bank = PlayerData.accounts.bank
+        if ESX.GetPlayerFromId(src) then
+            local identifier = ESX.GetPlayerFromId(src).identifier
+            local count = 1
+            identifier = string.gsub(identifier, 'license', "char" .. count)
+            local playerGrab = MySQL.Sync.fetchAll('SELECT * FROM users WHERE identifier = ?', {identifier})
+            playerGrab = playerGrab[1]
+            local Player = ESX.GetPlayerFromId(src)
+            Player.PlayerData = {
+                charinfo = {
+                    firstname = playerGrab.firstname,
+                    lastname = playerGrab.lastname,
+                    phone = playerGrab.phone_number,
+                    money = {
+                        cash = Player.getMoney('money'),
+                        bank = Player.getAccount('bank').money
+                    }
+                }
             }
-        }
-        return PlayerData
+            return Player
+        end
     end
 end
 
@@ -300,4 +304,9 @@ function getAllVehicles()
         allVehicles[v.model] = v
     end
     return allVehicles
+end
+
+function setupPlateNumber()
+    local plate = emfan.getRandomStr(3) .. " " .. emfan.getRandomInt(2) .. emfan.getRandomStr(1)
+    return plate
 end
