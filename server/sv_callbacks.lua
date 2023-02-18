@@ -2,6 +2,51 @@
 
 CreateThread(function()
     Wait(100)
+
+    emfan.createCallback('emfan-framework:cb:getAllJobs', function(source, cb)
+        local allJobs = MySQL.Sync.fetchAll('SELECT name FROM jobs', {})
+        cb(allJobs)
+    end)
+
+    emfan.createCallback('emfan-framework:cb:getAllSettings', function(source, cb)
+        local Player = ESX.GetPlayerFromId(source)
+        local fetchJobs = MySQL.Sync.fetchAll('SELECT name from jobs', {})
+        local fetchVehicles = MySQL.Sync.fetchAll('SELECT * from vehicles', {})
+
+        local jobs = {}
+        local vehicles = {}
+
+        local identifier = ESX.GetPlayerFromId(source).identifier
+        local count = 1
+        identifier = string.gsub(identifier, 'license', "char" .. count)
+
+        local playerGrab = MySQL.Sync.fetchAll('SELECT * FROM users WHERE identifier = ?', {identifier})
+        playerGrab = playerGrab[1]
+        local playerData = ESX.GetPlayerFromId(source)
+        playerData.charinfo = {
+            firstname = playerGrab.firstname,
+            lastname = playerGrab.lastname,
+            phone = playerGrab.phone_number,
+            money = {
+                cash = Player.getMoney('money'),
+                bank = Player.getAccount('bank').money
+            }
+        }
+        local playerMoney = {
+            ['bank'] = Player.getAccount('bank').money,
+            ['cash'] = Player.getMoney('money')
+        }
+
+        for k, v in pairs(fetchJobs) do
+            jobs[v.name] = v.name
+        end
+        for k, v in pairs(fetchVehicles) do
+            vehicles[v.model] = v
+        end
+
+        cb(jobs, vehicles, playerData, playerMoney)
+    end)
+
     emfan.createCallback('emfan-framework:cb:getAllVehicles', function(source, cb)
         local allVehicles = MySQL.Sync.fetchAll('SELECT * FROM vehicles', {})
         cb(allVehicles)
