@@ -127,6 +127,10 @@ local allVehicles = {}
         end
     end
 
+    function emfan.getVehicleModel(vehicle)
+        return GetEntityArchetypeName(vehicle)
+    end
+
     function emfan.getVehicleProperties(vehicle)
         if Framework == 'qb-core' then
             return QBCore.Functions.GetVehicleProperties(vehicle)
@@ -213,7 +217,7 @@ local allVehicles = {}
         end, model, coords, warp)
     end
 
-    function emfan.WaitForLogin()
+    function emfan.waitForLogin()
         if Framework == 'qb-core' then
             while not LocalPlayer.state.isLoggedIn do Wait(100) end
             Wait(1000)
