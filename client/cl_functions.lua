@@ -15,6 +15,7 @@ local allJobs = {}
 CreateThread(function()
     emfan.waitForLogin()
     Wait(100)
+    print("HELLO")
     if Framework == 'esx' then
         emfan.callback('emfan-framework:cb:getAllSettings', function(jobs, vehicles, playerdata, playerMoney)
             allJobs = jobs
@@ -220,7 +221,7 @@ function emfan.waitForLogin()
         while not LocalPlayer.state.isLoggedIn do Wait(100) end
         Wait(1000)
         return
-    elseif Framwork == 'esx' then
+    elseif Framework == 'esx' then
         while not ESX.PlayerLoaded do Wait(100) end
         Wait(1000)
         return
