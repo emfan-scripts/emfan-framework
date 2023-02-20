@@ -15,7 +15,6 @@ local allJobs = {}
 CreateThread(function()
     emfan.waitForLogin()
     Wait(100)
-    print("HELLO")
     if Framework == 'esx' then
         emfan.callback('emfan-framework:cb:getAllSettings', function(jobs, vehicles, playerdata, playerMoney)
             allJobs = jobs
@@ -222,7 +221,25 @@ function emfan.waitForLogin()
         Wait(1000)
         return
     elseif Framework == 'esx' then
-        while not ESX.PlayerLoaded do Wait(100) end
+        local orgPos, secondPos, confirmedPos = GetEntityCoords(PlayerPedId())
+        local playerLoaded = false
+        while not playerLoaded do 
+            Wait(100)
+            local xPlayer = PlayerPedId()
+            secondPos = GetEntityCoords(xPlayer)
+            if orgPos ~= secondPos then
+                Wait(1000)
+                secondPos = GetEntityCoords(xPlayer)
+                Wait(1000)
+                confirmedPos = GetEntityCoords(xPlayer)
+                if secondPos ~= confirmedPos then
+                    playerLoaded = true
+                else
+                    Wait(100)
+                    orgPos = secondPos
+                end
+            end
+        end
         Wait(1000)
         return
     end
