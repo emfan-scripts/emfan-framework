@@ -211,8 +211,10 @@ function emfan.setVehicleProperties(vehicle, properties)
 end
 
 function emfan.spawnVehicle(model, coords, warp)
-    emfan.callback('emfan-framwork:cb:spawnVehicle', function(netId)
-        
+    emfan.callback('emfan-framwork:cb:spawnVehicle', function(netId, vehicle)
+        -- print("netID", NetToVeh(netId), vehicle)
+        SetEntityHeading(vehicle, 350.0)
+        return vehicle
     end, model, coords, warp)
 end
 
