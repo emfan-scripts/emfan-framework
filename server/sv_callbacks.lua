@@ -15,8 +15,6 @@ CreateThread(function()
 
         local jobs = {}
         local vehicles = {}
-
-        print("source", source)
         local identifier = ESX.GetPlayerFromId(source).identifier
         local count = 1
         identifier = string.gsub(identifier, 'license', "char" .. count)
