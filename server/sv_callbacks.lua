@@ -43,7 +43,13 @@ CreateThread(function()
             vehicles[v.model] = v
         end
 
-        cb(jobs, vehicles, playerData, playerMoney)
+        local jobLabels = {}
+        local allJobs = MySQL.Sync.fetchAll('SELECT * FROM jobs', {})
+        for k, v in pairs(allJobs) do
+            jobLabels[#jobLabels+1] = v.label
+        end
+
+        cb(jobs, vehicles, playerData, playerMoney, jobLabels)
     end)
 
     emfan.createCallback('emfan-framework:cb:getAllVehicles', function(source, cb)
@@ -78,6 +84,6 @@ CreateThread(function()
             end
         end
         while NetworkGetEntityOwner(vehicle) ~= source do Wait(10) end
-        cb(NetworkGetNetworkIdFromEntity(veh), vehicle)
+        cb(NetworkGetNetworkIdFromEntity(veh))
     end)
 end)

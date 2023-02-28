@@ -11,16 +11,18 @@ local PlayerData = {}
 local PlayerMoney = {}
 local allVehicles = {}
 local allJobs = {}
+local allJobLabels = {}
 
 CreateThread(function()
     emfan.waitForLogin()
     Wait(100)
     if Framework == 'esx' then
-        emfan.callback('emfan-framework:cb:getAllSettings', function(jobs, vehicles, playerdata, playerMoney)
+        emfan.callback('emfan-framework:cb:getAllSettings', function(jobs, vehicles, playerdata, playerMoney, jobLabels)
             allJobs = jobs
             allVehicles = vehicles
             PlayerData = playerdata
             PlayerMoney = playerMoney
+            allJobLabels = jobLabels
         end)
     end
 end)
@@ -28,6 +30,19 @@ end)
 function emfan.callback(eventName, cb, ...)
     emfan.serverCallbacks[eventName] = cb
     TriggerServerEvent('emfan-framework:server:callback', eventName, ...)
+end
+
+function emfan.getAllJobLabels()
+    if Framework == 'qb-core' then
+        local allJobs = QBCore.Shared.Jobs
+        local jobLabels = {}
+        for k, v in pairs(allJobs) do
+            jobLabels[#jobLabels+1] = v.label
+        end
+        return jobLabels
+    elseif Framework == 'esx' then
+        return allJobLabels
+    end
 end
 
 function emfan.getAllJobs()
@@ -210,10 +225,7 @@ function emfan.setVehicleProperties(vehicle, properties)
 end
 
 function emfan.spawnVehicle(model, coords, warp)
-    emfan.callback('emfan-framwork:cb:spawnVehicle', function(netId, vehicle)
-        -- print("netID", NetToVeh(netId), vehicle)
-        SetEntityHeading(vehicle, 350.0)
-        return vehicle
+    emfan.callback('emfan-framwork:cb:spawnVehicle', function(netId)
     end, model, coords, warp)
 end
 
