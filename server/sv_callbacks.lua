@@ -46,7 +46,7 @@ CreateThread(function()
         local jobLabels = {}
         local allJobs = MySQL.Sync.fetchAll('SELECT * FROM jobs', {})
         for k, v in pairs(allJobs) do
-            jobLabels[#jobLabels+1] = v.label
+            jobLabels[v.name] = v.label
         end
 
         cb(jobs, vehicles, playerData, playerMoney, jobLabels)

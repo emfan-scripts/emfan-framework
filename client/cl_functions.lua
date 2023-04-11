@@ -37,7 +37,7 @@ function emfan.getAllJobLabels()
         local allJobs = QBCore.Shared.Jobs
         local jobLabels = {}
         for k, v in pairs(allJobs) do
-            jobLabels[#jobLabels+1] = v.label
+            jobLabels[k] = v.label
         end
         return jobLabels
     elseif Framework == 'esx' then

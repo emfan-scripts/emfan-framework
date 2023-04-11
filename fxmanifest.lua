@@ -28,6 +28,6 @@ escrow_ignore {
     'locales/*.*',
     'html/*.*',
     'config.lua',
-    'server/sv_opensource.lua',
-    'client/cl_opensource.lua'
+    'server/*.lua',
+    'client/*.lua'
 }
