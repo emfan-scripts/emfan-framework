@@ -84,6 +84,6 @@ CreateThread(function()
             end
         end
         while NetworkGetEntityOwner(vehicle) ~= source do Wait(10) end
-        cb(NetworkGetNetworkIdFromEntity(veh))
+        cb(NetworkGetNetworkIdFromEntity(vehicle))
     end)
 end)

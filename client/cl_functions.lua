@@ -226,6 +226,7 @@ end
 
 function emfan.spawnVehicle(model, coords, warp)
     emfan.callback('emfan-framwork:cb:spawnVehicle', function(netId)
+        return netId
     end, model, coords, warp)
 end
 
