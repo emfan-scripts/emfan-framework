@@ -6,6 +6,10 @@ if Framework == 'qb-core' then
     QBCore = exports['qb-core']:GetCoreObject()
 elseif Framework == 'esx' then 
     ESX = exports['es_extended']:getSharedObject()
+elseif Framework == 'ug' then
+    TriggerEvent("xploit-core:fetchMain", function(library)
+        X = library
+    end)
 end
 
     
