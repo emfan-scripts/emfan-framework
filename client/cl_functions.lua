@@ -224,10 +224,10 @@ function emfan.setVehicleProperties(vehicle, properties)
     end
 end
 
-function emfan.spawnVehicle(model, coords, warp)
+function emfan.spawnVehicle(model, coords, warp, plate)
     emfan.callback('emfan-framwork:cb:spawnVehicle', function(netId)
         return netId
-    end, model, coords, warp)
+    end, model, coords, warp, plate)
 end
 
 function emfan.waitForLogin()

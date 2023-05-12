@@ -83,6 +83,9 @@ CreateThread(function()
                 TaskWarpPedIntoVehicle(xPlayer, vehicle, -1)
             end
         end
+        if plate then
+            SetVehicleNumberPlateText(vehicle, plate)
+        end
         while NetworkGetEntityOwner(vehicle) ~= source do Wait(10) end
         cb(NetworkGetNetworkIdFromEntity(vehicle))
     end)
