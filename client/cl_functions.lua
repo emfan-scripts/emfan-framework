@@ -2,7 +2,7 @@ emfan = {}
 emfan.serverCallbacks = {}
 
 if Config.Framework == 'qb-core' then
-    QBCore = exports['qb-core']:GetCoreObject()
+    QBCore = exports[Config.Framework]:GetCoreObject()
 elseif Config.Framework == 'esx' then 
     ESX = exports['es_extended']:getSharedObject()
 end
