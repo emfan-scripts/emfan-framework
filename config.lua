@@ -1,5 +1,5 @@
 Config = {
-    Framework = 'qb-core',                          -- Choose your framework (qb-core/esx)
+    Framework = 'qbx-core',                          -- Choose your framework (qb-core/qbx-core/esx)
 
     VehicleKeySystem = 'default',               -- default, emfan, nerv, cd_garage
 }

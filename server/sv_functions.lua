@@ -2,15 +2,15 @@ emfan = {}
 emfan.serverCallbacks = {}
 Framework = Config.Framework
 
-if Framework == 'qb-core' then
-    QBCore = exports['qb-core']:GetCoreObject()
+if Framework == 'qb-core' or Framework == 'qbx-core' then
+    QBCore = exports[Config.Framework]:GetCoreObject()
 elseif Framework == 'esx' then 
     ESX = exports['es_extended']:getSharedObject()
 end
 
     
 function emfan.addItem(source, item, amount, metadata)
-    if Framework == 'qb-core' then
+    if Framework == 'qb-core' or Framework == 'qbx-core' then
         local Player = QBCore.Functions.GetPlayer(source)
         if item == 'fakeplate' and metadata == nil then
             local plate = setupPlateNumber()
@@ -31,7 +31,7 @@ function emfan.addItem(source, item, amount, metadata)
 end
 
 function emfan.addJobMoney(job, amount)
-    if Framework == 'qb-core' then
+    if Framework == 'qb-core' or Framework == 'qbx-core' then
         exports['qb-management']:AddMoney(job, amount)
     elseif Framework == 'esx' then
         job = "society_" .. job
@@ -41,7 +41,7 @@ function emfan.addJobMoney(job, amount)
 end
 
 function emfan.addMoney(source, account, amount, note)
-    if Framework == 'qb-core' then
+    if Framework == 'qb-core' or Framework == 'qbx-core' then
         local Player = QBCore.Functions.GetPlayer(source)
         Player.Functions.AddMoney(account, amount)
     elseif Framework == 'esx' then
@@ -64,7 +64,7 @@ function emfan.createCustomPlate()
 end
 
 function emfan.createUseableItem(item, ...)
-    if Framework == 'qb-core' then
+    if Framework == 'qb-core' or Framework == 'qbx-core' then
         QBCore.Functions.CreateUseableItem(item, ...)
     elseif Framework == 'esx' then
         ESX.RegisterUsableItem(item, ...    )
@@ -72,7 +72,7 @@ function emfan.createUseableItem(item, ...)
 end
 
 function emfan.getCid(source)
-    if Framework == 'qb-core' then
+    if Framework == 'qb-core' or Framework == 'qbx-core' then
         return QBCore.Functions.GetPlayer(source).PlayerData.citizenid
     elseif Framework == 'esx' then
         local Player = ESX.GetPlayerFromId(source)
@@ -81,7 +81,7 @@ function emfan.getCid(source)
 end
 
 function emfan.getAllJobs()
-    if Framework == 'qb-core' then
+    if Framework == 'qb-core' or Framework == 'qbx-core' then
         return QBCore.Shared.Jobs
     elseif Framework == 'esx' then
         return MySQL.Sync.fetchAll('SELECT name FROM jobs', {})
@@ -89,7 +89,7 @@ function emfan.getAllJobs()
 end
 
 function emfan.getAllVehicles()
-    if Framework == 'qb-core' then
+    if Framework == 'qb-core' or Framework == 'qbx-core' then
         return QBCore.Shared.Vehicles
     elseif Framework == 'esx' then
         return getAllVehicles()
@@ -97,7 +97,7 @@ function emfan.getAllVehicles()
 end
 
 function emfan.getItem(source, item)
-    if Framework == 'qb-core' then
+    if Framework == 'qb-core' or Framework == 'qbx-core' then
         local Player = QBCore.Functions.GetPlayer(source)
         return Player.Functions.GetItemByName(item)
     elseif Framework == 'esx' then
@@ -107,7 +107,7 @@ function emfan.getItem(source, item)
 end
 
 function emfan.getItems(source, item)
-    if Framework == 'qb-core' then
+    if Framework == 'qb-core' or Framework == 'qbx-core' then
         local Player = QBCore.Functions.GetPlayer(source)
         return Player.Functions.GetItemsByName(item)
     elseif Framework == 'esx' then
@@ -117,7 +117,7 @@ function emfan.getItems(source, item)
 end
 
 function emfan.getJob(source)
-    if Framework == 'qb-core' then
+    if Framework == 'qb-core' or Framework == 'qbx-core' then
         return QBCore.Functions.GetPlayer(source).PlayerData.job.name
     elseif Framework == 'esx' then
         local Player = ESX.GetPlayerFromId(source)
@@ -126,7 +126,7 @@ function emfan.getJob(source)
 end
 
 function emfan.getJobMoney(job)
-    if Framework == 'qb-core' then
+    if Framework == 'qb-core' or Framework == 'qbx-core' then
         return exports['qb-management']:GetAccount(job)
     elseif Framework == 'esx' then
         job = "society_" .. job
@@ -135,7 +135,7 @@ function emfan.getJobMoney(job)
 end
 
 function emfan.getMoney(source, account)
-    if Framework == 'qb-core' then
+    if Framework == 'qb-core' or Framework == 'qbx-core' then
         local Player = QBCore.Functions.GetPlayer(source)
         return Player.Functions.GetMoney(account)
     elseif Framework == 'esx' then
@@ -145,7 +145,7 @@ function emfan.getMoney(source, account)
 end
 
 function emfan.getPlayer(src)
-    if Framework == 'qb-core' then
+    if Framework == 'qb-core' or Framework == 'qbx-core' then
         return QBCore.Functions.GetPlayer(src)
     elseif Framework == 'esx' then
         if ESX.GetPlayerFromId(src) then
@@ -172,7 +172,7 @@ function emfan.getPlayer(src)
 end
 
 function emfan.getPlayers()
-    if Framework == 'qb-core' then
+    if Framework == 'qb-core' or Framework == 'qbx-core' then
         return QBCore.Functions.GetPlayers()
     elseif Framework == 'esx' then
         return ESX.GetPlayers
@@ -235,7 +235,7 @@ function emfan.getRandomStr(amount)
 end
 
 function emfan.hasItem(source, item)
-    if Framework == 'qb-core' then
+    if Framework == 'qb-core' or Framework == 'qbx-core' then
         local Player = QBCore.Functions.GetPlayer(source)
         return Player.Functions.GetItemByName(item)
     elseif Framework == 'esx' then
@@ -252,7 +252,7 @@ function emfan.loadModel(model)
 end
 
 function emfan.notify(source, text, notifyType, length)
-    if Framework == 'qb-core' then
+    if Framework == 'qb-core' or Framework == 'qbx-core' then
         TriggerClientEvent('QBCore:Notify', source, text, notifyType, time)
     elseif Framework == 'esx' then
         local Player = ESX.GetPlayerFromId(source)
@@ -261,7 +261,7 @@ function emfan.notify(source, text, notifyType, length)
 end
 
 function emfan.removeItem(source, item, amount, slot)
-    if Framework == 'qb-core' then
+    if Framework == 'qb-core' or Framework == 'qbx-core' then
         local Player = QBCore.Functions.GetPlayer(source)
         Player.Functions.RemoveItem(item, amount, slot)
     elseif Framework == 'esx' then
@@ -271,7 +271,7 @@ function emfan.removeItem(source, item, amount, slot)
 end
 
 function emfan.removeJobMoney(job, amount)
-    if Framework == 'qb-core' then
+    if Framework == 'qb-core' or Framework == 'qbx-core' then
         exports['qb-management']:RemoveMoney(job, amount)
     elseif Framework == 'esx' then
         job = "society_" .. job
@@ -281,7 +281,7 @@ function emfan.removeJobMoney(job, amount)
 end
 
 function emfan.removeMoney(source, account, amount)
-    if Framework == 'qb-core' then
+    if Framework == 'qb-core' or Framework == 'qbx-core' then
         local Player = QBCore.Functions.GetPlayer(source)
         Player.Functions.RemoveMoney(account, amount)
     elseif Framework == 'esx' then
