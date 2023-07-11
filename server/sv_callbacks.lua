@@ -69,7 +69,7 @@ CreateThread(function()
         cb(emfan.getPlayer(source))
     end)
 
-    emfan.createCallback('emfan-framwork:cb:spawnVehicle', function(source, cb, model, coords, warp)
+    emfan.createCallback('emfan-framwork:cb:spawnVehicle', function(source, cb, model, coords, warp, plate)
         local xPlayer = GetPlayerPed(source)
         model = type(model) == 'string' and joaat(model) or model
         if not coords then 

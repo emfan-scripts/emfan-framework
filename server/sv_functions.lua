@@ -109,7 +109,11 @@ end
 function emfan.getItems(source, item)
     if Framework == 'qb-core' or Framework == 'qbx-core' then
         local Player = QBCore.Functions.GetPlayer(source)
-        return Player.Functions.GetItemsByName(item)
+        if Config.Inventory == 'ps' then
+            exports['ps-inventory']:GetItemsByName(source, item)
+        else
+            return Player.Functions.GetItemsByName(item)
+        end
     elseif Framework == 'esx' then
         local Player = ESX.GetPlayerFromId(source)
         return exports['ox_inventory']:getInventory(Player)

@@ -225,9 +225,11 @@ function emfan.setVehicleProperties(vehicle, properties)
 end
 
 function emfan.spawnVehicle(model, coords, warp, plate)
+    local p = promise.new()
     emfan.callback('emfan-framwork:cb:spawnVehicle', function(netId)
-        return netId
+        p:resolve(netId)
     end, model, coords, warp, plate)
+    return Citizen.Await(p)
 end
 
 function emfan.waitForLogin()
