@@ -1,3 +1,22 @@
+local function spawnVehicle(source, model, coords, warp, plate)
+    local xPlayer = GetPlayerPed(source)
+    model = type(model) == 'string' and joaat(model) or model
+    if not coords then 
+        coords = GetEntityCoords(xPlayer) 
+    end
+    local vehicle = CreateVehicle(model, coords.x, coords.y, coords.z, coords.w, true, true)
+    while not DoesEntityExist(vehicle) do Wait(10) end
+    if warp then
+        while GetVehiclePedIsIn(xPlayer) ~= vehicle do
+            Wait(10)
+            TaskWarpPedIntoVehicle(xPlayer, vehicle, -1)
+        end
+    end
+    if plate then
+        SetVehicleNumberPlateText(vehicle, plate)
+    end
+    return vehicle
+end
 
 
 CreateThread(function()
@@ -70,23 +89,13 @@ CreateThread(function()
     end)
 
     emfan.createCallback('emfan-framwork:cb:spawnVehicle', function(source, cb, model, coords, warp, plate)
-        local xPlayer = GetPlayerPed(source)
-        model = type(model) == 'string' and joaat(model) or model
-        if not coords then 
-            coords = GetEntityCoords(xPlayer) 
+        local vehicle
+        while NetworkGetEntityOwner(vehicle) ~= source do
+            DeleteEntity(vehicle)
+            vehicle = spawnVehicle(source, model, coords, warp, plate)
+            Wait(200) 
+            -- print("Error spawning vehicle:", model) 
         end
-        local vehicle = CreateVehicle(model, coords.x, coords.y, coords.z, coords.w, true, true)
-        while not DoesEntityExist(vehicle) do Wait(10) end
-        if warp then
-            while GetVehiclePedIsIn(xPlayer) ~= vehicle do
-                Wait(10)
-                TaskWarpPedIntoVehicle(xPlayer, vehicle, -1)
-            end
-        end
-        if plate then
-            SetVehicleNumberPlateText(vehicle, plate)
-        end
-        while NetworkGetEntityOwner(vehicle) ~= source do Wait(10) end
         cb(NetworkGetNetworkIdFromEntity(vehicle))
     end)
 end)
