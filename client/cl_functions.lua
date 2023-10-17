@@ -16,7 +16,7 @@ local allJobLabels = {}
 CreateThread(function()
     emfan.waitForLogin()
     Wait(100)
-    if Framework == 'esx' then
+    if Config.Framework == 'esx' then
         emfan.callback('emfan-framework:cb:getAllSettings', function(jobs, vehicles, playerdata, playerMoney, jobLabels)
             allJobs = jobs
             allVehicles = vehicles
@@ -49,7 +49,7 @@ function emfan.getAllJobs()
     if Framework == 'qb-core' then
         return QBCore.Shared.Jobs
     elseif Framework == 'esx' then
-        return allJobs
+            return allJobs
     end
 end
 

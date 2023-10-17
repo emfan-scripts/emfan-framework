@@ -1,5 +1,5 @@
 Config = {
-    Framework = 'qb-core',                          -- Choose your framework (qb-core/qbx-core/esx)
+    Framework = 'esx',                          -- Choose your framework (qb-core/qbx-core/esx)
 
     Inventory = 'ps',                               -- qb, ps
 
