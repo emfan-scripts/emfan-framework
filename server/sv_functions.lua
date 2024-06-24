@@ -116,7 +116,7 @@ function emfan.getItems(source, item)
         end
     elseif Framework == 'esx' then
         local Player = ESX.GetPlayerFromId(source)
-        return exports['ox_inventory']:getInventory(Player)
+        return exports['ox_inventory']:GetInventory(Player)
     end
 end
 
