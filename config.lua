@@ -1,7 +1,7 @@
 Config = {
-    Framework = 'qb-core',                          -- Choose your framework (qb-core/qbx-core/esx)
+    Framework = 'qbx_core',                          -- Choose your framework (qb-core/qbx_core/esx)
 
-    Inventory = 'ps',                               -- qb, ps
+    Inventory = 'ox',                               -- qb, ps, ox
 
     VehicleKeySystem = 'default',               -- default, emfan, nerv, cd_garage
 }

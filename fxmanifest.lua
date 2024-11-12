@@ -11,6 +11,7 @@ lua54 'yes'
 
 shared_scripts {
     'config.lua',
+    '@ox_lib/init.lua'      -- UNCOMMENT IF YOU ARE USING ox_inventory
 }
 
 client_scripts {
