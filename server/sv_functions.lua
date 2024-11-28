@@ -13,6 +13,9 @@ function emfan.addItem(source, item, amount, metadata)
     if Framework == 'qb-core' or Framework == 'qbx_core' then
         if Config.Inventory == 'ox' then
             exports.ox_inventory:AddItem(source, item, amount, metadata)
+            if item == 'vehkeys' then
+                TriggerClientEvent('emfan-framework:client:displayMetadata', source, metadata)
+            end
         else
             local Player = QBCore.Functions.GetPlayer(source)
             if item == 'fakeplate' and metadata == nil then
